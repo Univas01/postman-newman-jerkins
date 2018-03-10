@@ -1,0 +1,1001 @@
+{
+	"info": {
+		"name": "Trello",
+		"_postman_id": "01aa9cc9-3f99-4dec-88ab-a8890915c5b7",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create a board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "20d00239-a12b-46a4-976b-613f7217dbb0",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Board name should be present\", function () {",
+							"   var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"boardName\"));",
+							"});",
+							"",
+							"pm.test(\"Closed parameter\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.closed).to.eql(false);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.globals.set(\"boardId\", jsonData.id);",
+							"",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5dfd95a9-d1b1-4253-828f-b24c29d7ff7c",
+						"type": "text/javascript",
+						"exec": [
+							"// Use currentBoardNumber to store the board number",
+							"var currentBoardNumber = pm.environment.get(\"currentBoardNumber\");",
+							"",
+							"// Check if currentBoardNumber is already defined",
+							"if (currentBoardNumber) {",
+							"    currentBoardNumber++;",
+							"} else {",
+							"    currentBoardNumber = 1;",
+							"}",
+							" ",
+							"var board = \"My board \" + currentBoardNumber;",
+							" ",
+							"// Set the boardName for the request",
+							"pm.environment.set(\"boardName\", board);",
+							" ",
+							"// Set the currentBoardNumber for future requests",
+							"pm.environment.set(\"currentBoardNumber\", currentBoardNumber);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "timeStamp",
+						"value": "{{timeStampHeader}}"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "{{trello_test}}/1/boards/?name={{boardName}}&key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{trello_test}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{boardName}}",
+							"equals": true
+						},
+						{
+							"key": "key",
+							"value": "{{trelloKey}}",
+							"equals": true
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "d02cef39-716f-4e8b-abc9-5f1ba2a979b9",
+					"name": "Testing Board created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "https://api.trello.com/1/boards/?name=Testing&key={{trelloKey}}&token={{trelloToken}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"trello",
+								"com"
+							],
+							"path": [
+								"1",
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Testing",
+									"equals": true
+								},
+								{
+									"key": "key",
+									"value": "{{trelloKey}}",
+									"equals": true
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}",
+									"equals": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization, Accept, Content-Type",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, PUT, POST, DELETE",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, must-revalidate, no-cache, no-store",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive",
+							"name": "Connection",
+							"description": "Options that are desired for the connection"
+						},
+						{
+							"key": "Content-Length",
+							"value": "942",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 03 Mar 2018 10:19:19 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3ae-e94f4873\"",
+							"name": "ETag",
+							"description": "An identifier for a specific version of a resource, often a message digest"
+						},
+						{
+							"key": "Expires",
+							"value": "Thu, 01 Jan 1970 00:00:00",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "strict-origin-when-cross-origin",
+							"name": "Referrer-Policy",
+							"description": "Custom header"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000",
+							"name": "Strict-Transport-Security",
+							"description": "A HSTS Policy informing the HTTP client how long to cache the HTTPS only policy and whether this applies to subdomains."
+						},
+						{
+							"key": "Surrogate-Control",
+							"value": "no-store",
+							"name": "Surrogate-Control",
+							"description": "Custom header"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off",
+							"name": "X-DNS-Prefetch-Control",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen",
+							"name": "X-Download-Options",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-KEY-INTERVAL-MS",
+							"value": "10000",
+							"name": "X-RATE-LIMIT-API-KEY-INTERVAL-MS",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-KEY-MAX",
+							"value": "300",
+							"name": "X-RATE-LIMIT-API-KEY-MAX",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-KEY-REMAINING",
+							"value": "299",
+							"name": "X-RATE-LIMIT-API-KEY-REMAINING",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-TOKEN-INTERVAL-MS",
+							"value": "10000",
+							"name": "X-RATE-LIMIT-API-TOKEN-INTERVAL-MS",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-TOKEN-MAX",
+							"value": "100",
+							"name": "X-RATE-LIMIT-API-TOKEN-MAX",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-TOKEN-REMAINING",
+							"value": "99",
+							"name": "X-RATE-LIMIT-API-TOKEN-REMAINING",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-MEMBER-INTERVAL-MS",
+							"value": "10000",
+							"name": "X-RATE-LIMIT-MEMBER-INTERVAL-MS",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-MEMBER-MAX",
+							"value": "200",
+							"name": "X-RATE-LIMIT-MEMBER-MAX",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-MEMBER-REMAINING",
+							"value": "199",
+							"name": "X-RATE-LIMIT-MEMBER-REMAINING",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Server-Time",
+							"value": "1520072359948",
+							"name": "X-Server-Time",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Trello-Environment",
+							"value": "Production",
+							"name": "X-Trello-Environment",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Trello-Version",
+							"value": "5",
+							"name": "X-Trello-Version",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Sun Mar 04 2018 17:36:19 GMT-0600 (CST)",
+							"httpOnly": false,
+							"domain": "api.trello.com",
+							"path": "/",
+							"secure": true,
+							"value": "348d6c9658cf06082d9b94b3fd34f26303578dc1c980f56a6c8bb9bafcfe9ab4",
+							"key": "dsc"
+						}
+					],
+					"body": "{\"id\":\"5a9a76a7ebfeb3729619740d\",\"name\":\"Testing\",\"desc\":\"\",\"descData\":null,\"closed\":false,\"idOrganization\":null,\"pinned\":false,\"url\":\"https://trello.com/b/OZ1tDsAd/testing\",\"shortUrl\":\"https://trello.com/b/OZ1tDsAd\",\"prefs\":{\"permissionLevel\":\"private\",\"voting\":\"disabled\",\"comments\":\"members\",\"invitations\":\"members\",\"selfJoin\":true,\"cardCovers\":true,\"cardAging\":\"regular\",\"calendarFeedEnabled\":false,\"background\":\"blue\",\"backgroundImage\":null,\"backgroundImageScaled\":null,\"backgroundTile\":false,\"backgroundBrightness\":\"dark\",\"backgroundColor\":\"#0079BF\",\"backgroundBottomColor\":\"#0079BF\",\"backgroundTopColor\":\"#0079BF\",\"canBePublic\":true,\"canBeOrg\":true,\"canBePrivate\":true,\"canInvite\":true},\"labelNames\":{\"green\":\"\",\"yellow\":\"\",\"orange\":\"\",\"red\":\"\",\"purple\":\"\",\"blue\":\"\",\"sky\":\"\",\"lime\":\"\",\"pink\":\"\",\"black\":\"\"},\"limits\":{\"5a988d3de7f1b4ce58b24ff2\":{\"boards\":{\"totalPerMember\":{\"count\":7,\"status\":\"ok\",\"disableAt\":56050,\"warnAt\":53100}}}}}"
+				}
+			]
+		},
+		{
+			"name": "Create a list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c8026b6a-5d82-4b9e-8702-1b0dd2ed98d5",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Correct board name\", function () {",
+							"   var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"boardName\"));",
+							"});",
+							"",
+							"pm.test(\"Verify Board ID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.idBoard).to.eql(pm.variables.get(\"boardId\"));",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"listId\", jsonData.id);",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e1239ad5-0a65-4c0e-b00b-08ecf6c62ceb",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{trello_test}}/1/lists?name={{boardName}}&idBoard={{boardId}}&key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{trello_test}}"
+					],
+					"path": [
+						"1",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{boardName}}",
+							"equals": true
+						},
+						{
+							"key": "idBoard",
+							"value": "{{boardId}}",
+							"equals": true
+						},
+						{
+							"key": "key",
+							"value": "{{trelloKey}}",
+							"equals": true
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create a card in LIST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d1b8eced-d2a0-4a4b-b77b-57215025be02",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Should have VOTES nested property as 0\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.badges.votes).to.eql(0);",
+							"});",
+							"",
+							"pm.test(\"Should have DESCRIPTION nested property as false\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.badges.description).to.eql(false);",
+							"});",
+							"",
+							"pm.test(\"Should have Board Id\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.idBoard).to.eql(pm.globals.get(\"boardId\"));",
+							"});",
+							""
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fc894f44-eca4-430b-b700-6149462b2d5f",
+						"type": "text/javascript",
+						"exec": [
+							"var card = \"Card \" + parseInt(Math.random() * 100);",
+							"pm.environment.set(\"cardName\", card);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{trello_test}}/1/cards?name={{cardName}}&idList={{listId}}&key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{trello_test}}"
+					],
+					"path": [
+						"1",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "{{cardName}}",
+							"equals": true
+						},
+						{
+							"key": "idList",
+							"value": "{{listId}}",
+							"equals": true
+						},
+						{
+							"key": "key",
+							"value": "{{trelloKey}}",
+							"equals": true
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb17addc-7251-4fef-9597-23d055e2f356",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{trello_test}}/1/boards/:id?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{trello_test}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}",
+							"equals": true
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}",
+							"equals": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardId}}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": [
+				{
+					"id": "caeea49a-9bf1-4995-af49-9f5392ac0eae",
+					"name": "Testing Board created",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "https://api.trello.com/1/boards/?name=Testing&key={{trelloKey}}&token={{trelloToken}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"trello",
+								"com"
+							],
+							"path": [
+								"1",
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Testing",
+									"equals": true
+								},
+								{
+									"key": "key",
+									"value": "{{trelloKey}}",
+									"equals": true
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}",
+									"equals": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "Authorization, Accept, Content-Type",
+							"name": "Access-Control-Allow-Headers",
+							"description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the actual request."
+						},
+						{
+							"key": "Access-Control-Allow-Methods",
+							"value": "GET, PUT, POST, DELETE",
+							"name": "Access-Control-Allow-Methods",
+							"description": "Specifies the method or methods allowed when accessing the resource. This is used in response to a preflight request."
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*",
+							"name": "Access-Control-Allow-Origin",
+							"description": "Specifies a URI that may access the resource. For requests without credentials, the server may specify '*' as a wildcard, thereby allowing any origin to access the resource."
+						},
+						{
+							"key": "Cache-Control",
+							"value": "max-age=0, must-revalidate, no-cache, no-store",
+							"name": "Cache-Control",
+							"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive",
+							"name": "Connection",
+							"description": "Options that are desired for the connection"
+						},
+						{
+							"key": "Content-Length",
+							"value": "942",
+							"name": "Content-Length",
+							"description": "The length of the response body in octets (8-bit bytes)"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8",
+							"name": "Content-Type",
+							"description": "The mime type of this content"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 03 Mar 2018 10:19:19 GMT",
+							"name": "Date",
+							"description": "The date and time that the message was sent"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3ae-e94f4873\"",
+							"name": "ETag",
+							"description": "An identifier for a specific version of a resource, often a message digest"
+						},
+						{
+							"key": "Expires",
+							"value": "Thu, 01 Jan 1970 00:00:00",
+							"name": "Expires",
+							"description": "Gives the date/time after which the response is considered stale"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache",
+							"name": "Pragma",
+							"description": "Implementation-specific headers that may have various effects anywhere along the request-response chain."
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "strict-origin-when-cross-origin",
+							"name": "Referrer-Policy",
+							"description": "Custom header"
+						},
+						{
+							"key": "Strict-Transport-Security",
+							"value": "max-age=15552000",
+							"name": "Strict-Transport-Security",
+							"description": "A HSTS Policy informing the HTTP client how long to cache the HTTPS only policy and whether this applies to subdomains."
+						},
+						{
+							"key": "Surrogate-Control",
+							"value": "no-store",
+							"name": "Surrogate-Control",
+							"description": "Custom header"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding",
+							"name": "Vary",
+							"description": "Tells downstream proxies how to match future request headers to decide whether the cached response can be used rather than requesting a fresh one from the origin server."
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff",
+							"name": "X-Content-Type-Options",
+							"description": "The only defined value, \"nosniff\", prevents Internet Explorer from MIME-sniffing a response away from the declared content-type"
+						},
+						{
+							"key": "X-DNS-Prefetch-Control",
+							"value": "off",
+							"name": "X-DNS-Prefetch-Control",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Download-Options",
+							"value": "noopen",
+							"name": "X-Download-Options",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY",
+							"name": "X-Frame-Options",
+							"description": "Clickjacking protection: \"deny\" - no rendering within a frame, \"sameorigin\" - no rendering if origin mismatch"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-KEY-INTERVAL-MS",
+							"value": "10000",
+							"name": "X-RATE-LIMIT-API-KEY-INTERVAL-MS",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-KEY-MAX",
+							"value": "300",
+							"name": "X-RATE-LIMIT-API-KEY-MAX",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-KEY-REMAINING",
+							"value": "299",
+							"name": "X-RATE-LIMIT-API-KEY-REMAINING",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-TOKEN-INTERVAL-MS",
+							"value": "10000",
+							"name": "X-RATE-LIMIT-API-TOKEN-INTERVAL-MS",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-TOKEN-MAX",
+							"value": "100",
+							"name": "X-RATE-LIMIT-API-TOKEN-MAX",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-API-TOKEN-REMAINING",
+							"value": "99",
+							"name": "X-RATE-LIMIT-API-TOKEN-REMAINING",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-MEMBER-INTERVAL-MS",
+							"value": "10000",
+							"name": "X-RATE-LIMIT-MEMBER-INTERVAL-MS",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-MEMBER-MAX",
+							"value": "200",
+							"name": "X-RATE-LIMIT-MEMBER-MAX",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-RATE-LIMIT-MEMBER-REMAINING",
+							"value": "199",
+							"name": "X-RATE-LIMIT-MEMBER-REMAINING",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Server-Time",
+							"value": "1520072359948",
+							"name": "X-Server-Time",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Trello-Environment",
+							"value": "Production",
+							"name": "X-Trello-Environment",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-Trello-Version",
+							"value": "5",
+							"name": "X-Trello-Version",
+							"description": "Custom header"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "1; mode=block",
+							"name": "X-XSS-Protection",
+							"description": "Cross-site scripting (XSS) filter"
+						}
+					],
+					"cookie": [
+						{
+							"expires": "Sun Mar 04 2018 17:36:19 GMT-0600 (CST)",
+							"httpOnly": false,
+							"domain": "api.trello.com",
+							"path": "/",
+							"secure": true,
+							"value": "348d6c9658cf06082d9b94b3fd34f26303578dc1c980f56a6c8bb9bafcfe9ab4",
+							"key": "dsc"
+						}
+					],
+					"body": "{\"id\":\"5a9a76a7ebfeb3729619740d\",\"name\":\"Testing\",\"desc\":\"\",\"descData\":null,\"closed\":false,\"idOrganization\":null,\"pinned\":false,\"url\":\"https://trello.com/b/OZ1tDsAd/testing\",\"shortUrl\":\"https://trello.com/b/OZ1tDsAd\",\"prefs\":{\"permissionLevel\":\"private\",\"voting\":\"disabled\",\"comments\":\"members\",\"invitations\":\"members\",\"selfJoin\":true,\"cardCovers\":true,\"cardAging\":\"regular\",\"calendarFeedEnabled\":false,\"background\":\"blue\",\"backgroundImage\":null,\"backgroundImageScaled\":null,\"backgroundTile\":false,\"backgroundBrightness\":\"dark\",\"backgroundColor\":\"#0079BF\",\"backgroundBottomColor\":\"#0079BF\",\"backgroundTopColor\":\"#0079BF\",\"canBePublic\":true,\"canBeOrg\":true,\"canBePrivate\":true,\"canInvite\":true},\"labelNames\":{\"green\":\"\",\"yellow\":\"\",\"orange\":\"\",\"red\":\"\",\"purple\":\"\",\"blue\":\"\",\"sky\":\"\",\"lime\":\"\",\"pink\":\"\",\"black\":\"\"},\"limits\":{\"5a988d3de7f1b4ce58b24ff2\":{\"boards\":{\"totalPerMember\":{\"count\":7,\"status\":\"ok\",\"disableAt\":56050,\"warnAt\":53100}}}}}"
+				}
+			]
+		},
+		{
+			"name": "Get all Cards for a Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bf35963f-31fd-4faa-97e8-cd989f332f24",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Correct board name\", function () {",
+							"   var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(pm.environment.get(\"boardName\"));",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "43be6100-9911-45b6-8a81-8952007690b6",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{trello_test}}//1/boards/:id/?cards=all&key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{trello_test}}"
+					],
+					"path": [
+						"",
+						"1",
+						"boards",
+						":id",
+						""
+					],
+					"query": [
+						{
+							"key": "cards",
+							"value": "all",
+							"equals": true
+						},
+						{
+							"key": "key",
+							"value": "{{trelloKey}}",
+							"equals": true
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}",
+							"equals": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardId}}"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all boards",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{trello_test}}/1/members/woodsmarc/boards?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{trello_test}}"
+					],
+					"path": [
+						"1",
+						"members",
+						"woodsmarc",
+						"boards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}",
+							"equals": true
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}",
+							"equals": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "98d2d7b4-8b2a-4822-b522-febbdd0bbe3b",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.globals.unset(\"boardId\");",
+							"pm.environment.unset(\"boardName\");",
+							"pm.environment.unset(\"listId\");",
+							"pm.environment.unset(\"cardName\");",
+							"pm.environment.unset(\"timeStampHeader\");",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{trello_test}}/1/boards/:id?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{trello_test}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}",
+							"equals": true
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}",
+							"equals": true
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardId}}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		}
+	]
+}

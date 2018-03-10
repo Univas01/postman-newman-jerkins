@@ -1,0 +1,15 @@
+{
+  "name": "postman-newman-jerkins",
+  "version": "1.0.0",
+  "description": "Project for storing postman tests",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "api-tests-production": "newman run tests/Jsonplaceholder.com.postman_collection.json"
+  },
+  "author": "Ola Ajala",
+  "dependencies": {
+    "newman": "^3.9.3"
+  }
+}
